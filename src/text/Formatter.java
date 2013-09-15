@@ -35,7 +35,7 @@ public class Formatter {
                 if (_numericParts.length > 0)
                 {
                     String _numericPart = _numericParts[0];
-                    int _decimals = 
+                    int _decimals = 0;
                 }
             }
         }
