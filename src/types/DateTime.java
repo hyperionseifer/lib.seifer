@@ -35,27 +35,6 @@ public class DateTime {
     public final static long DAY_MILLIS = HOUR_MILLIS * 24;
     public final static long YEAR_MILLIS = DAY_MILLIS * 365;
 
-    public static DateFormat OUT_DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
-    public static DateFormat OUT_TIME_FORMAT = new SimpleDateFormat("H:mm:ss");
-    public static DateFormat OUT_DATETIME_FORMAT = new SimpleDateFormat("d/M/yyyy H:mm:ss");
-    public static DateFormat OUT_TIMESTAMP_FORMAT = new SimpleDateFormat("d/M/yy H:mm:ss.SSS");
-    
-    public static DateFormat IN_DATE_FORMAT = new SimpleDateFormat("d/M/yy");
-    public static DateFormat IN_TIME_FORMAT = new SimpleDateFormat("H:mm:ss");
-    public static DateFormat IN_DATETIME_FORMAT = new SimpleDateFormat("d/M/yy H:mm:ss");
-    public static DateFormat IN_TIMESTAMP_FORMAT = new SimpleDateFormat("d/M/yy H:mm:ss.SSS");
-    
-    public static DateFormat DATE_TIME_FORMAT = new SimpleDateFormat( "yyyyMMddkkmmss" );  
-
-    public static Calendar calendar = new GregorianCalendar();
-
-    static
-    {
-        IN_DATE_FORMAT.setLenient(false);
-        IN_TIME_FORMAT.setLenient(false);
-        IN_DATETIME_FORMAT.setLenient(false);
-    }
-    
     /***
      * Adds the specified days into the supplied date and returns it afterwards.
      * @param value Date to be added.

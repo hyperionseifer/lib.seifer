@@ -9,14 +9,45 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 /**
  *
  * @author user
  */
 public class Converter {
+    
+    public static DateFormat DATE_TIME_FORMAT = new SimpleDateFormat( "yyyyMMddkkmmss" );  
+
+    public static Calendar calendar = new GregorianCalendar();
+
+    private static String[] supportedDateFormats = new String[] { "[0-9]{2}/[0-9]{2}/[0-9]{4} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2} (AM|am|PM|pm)",
+                                                                  "[0-9]{2}\\-[0-9]{2}\\-[0-9]{4} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2} (AM|am|PM|pm)",
+                                                                  "[0-9]/[0-9]/[0-9]{4} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2} (AM|am|PM|pm)",
+                                                                  "[0-9]\\-[0-9]\\-[0-9]{4} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2} (AM|am|PM|pm)",
+                                                                  "[0-9]{4}/[0-9]{2}/[0-9]{2} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2} (AM|am|PM|pm)", 
+                                                                  "[0-9]{4}\\-[0-9]{2}\\-[0-9]{2} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2} (AM|am|PM|pm)", 
+                                                                  "[0-9]{2}/[0-9]{2}/[0-9]{4} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2}",
+                                                                  "[0-9]{2}\\-[0-9]{2}\\-[0-9]{4} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2}",
+                                                                  "[0-9]/[0-9]/[0-9]{4} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2}",
+                                                                  "[0-9]\\-[0-9]\\-[0-9]{4} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2}",
+                                                                  "[0-9]{4}/[0-9]{2}/[0-9]{2} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2}", 
+                                                                  "[0-9]{4}\\-[0-9]{2}\\-[0-9]{2} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2}",
+                                                                  "(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Oct|Nov|Dec)/[0-9]{2}/[0-9]{4} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2} (AM|am|PM|pm)",
+                                                                  "[0-9]{2}\\-[0-9]{2}\\-[0-9]{4} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2} (AM|am|PM|pm)",
+                                                                  "[0-9]/[0-9]/[0-9]{4} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2} (AM|am|PM|pm)",
+                                                                  "[0-9]\\-[0-9]\\-[0-9]{4} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2} (AM|am|PM|pm)",
+                                                                  "[0-9]{4}/[0-9]{2}/[0-9]{2} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2} (AM|am|PM|pm)", 
+                                                                  "[0-9]{4}\\-[0-9]{2}\\-[0-9]{2} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2} (AM|am|PM|pm)", 
+                                                                  "[0-9]{2}/[0-9]{2}/[0-9]{4} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2}",
+                                                                  "[0-9]{2}\\-[0-9]{2}\\-[0-9]{4} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2}",
+                                                                  "[0-9]/[0-9]/[0-9]{4} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2}",
+                                                                  "[0-9]\\-[0-9]\\-[0-9]{4} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2}",
+                                                                  "[0-9]{4}/[0-9]{2}/[0-9]{2} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2}", 
+                                                                  "[0-9]{4}\\-[0-9]{2}\\-[0-9]{2} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2}"  };
     
     /**
      * Determines whether the specified object is a date value or not.
@@ -30,17 +61,13 @@ public class Converter {
         {
             if (value instanceof Date ||
                 value instanceof Timestamp ||
-                value instanceof Time) return true;
+                value instanceof Time ||
+                value instanceof java.sql.Date) return true;
             else
             {
-                DateFormat _formatter = DateFormat.getInstance();
-                try
-                {
-                    _formatter.parse(value.toString());
-                    return true;
-                }
-                catch (ParseException ex)
-                { ex.toString(); return false; }   
+                String _toString = value.toString();
+                
+                return false;
             }
         }
     }
@@ -111,6 +138,11 @@ public class Converter {
         else return Byte.parseByte(value.toString());
     }
     
+    /**
+     * Converts the specified value to date-typed object.
+     * @param value Value to convert.
+     * @return Date-typed value of the specified object if it is a date, otherwise 1900-01-01.
+     */
     public static Date toDate(Object value)
     {
         if (!isDate(value)) 
@@ -121,8 +153,32 @@ public class Converter {
         }
         else
         {
-            Calendar _calendar = Calendar.getInstance();
-            return _calendar.getTime();
+           if (value instanceof Date) return (Date)value;
+           else
+           {
+               try
+               {
+                   if (value instanceof String)
+                   {
+                       if ("".equals(value.toString())) 
+                       {
+                            Calendar _calendar = Calendar.getInstance();
+                            _calendar.set(1900, 1, 1);
+                            return _calendar.getTime();            
+                       }
+                       else return IN_DATETIME_FORMAT.parse(value.toString());
+                   }
+                   else return IN_DATETIME_FORMAT.parse(value.toString());   
+               }
+               catch (ParseException ex)
+               {
+                   ex.toString();
+                   
+                   Calendar _calendar = Calendar.getInstance();
+                   _calendar.set(1900, 1, 1);
+                   return _calendar.getTime();            
+               }
+           }
         }
     }
     
