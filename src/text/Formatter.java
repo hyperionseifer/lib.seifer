@@ -5,6 +5,7 @@
 package text;
 
 import java.text.DecimalFormat;
+import java.util.Date;
 import types.Converter;
 
 /**
@@ -23,6 +24,13 @@ public class Formatter {
     {
         double _value = Converter.toDouble(value);
         return Format(_value, format);
+    }
+   
+    public static String Format(Date value, String format)
+    {
+        String _formatted = "";
+        
+        return _formatted;
     }
     
     /**

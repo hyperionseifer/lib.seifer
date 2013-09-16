@@ -20,7 +20,7 @@ import text.RegEx;
  * @author user
  */
 public class Converter {
-
+    
     private static DateParser[] supportedDateFormats = new DateParser[] {  new DateParser("[0-9]{2}/[0-9]{2}/[0-9]{4} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2} (?i)(AM|PM)(?-i)", "MM/dd/yyyy hh:mm:ss a"), 
                                                                            new DateParser("[0-9]{2}\\-[0-9]{2}\\-[0-9]{4} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2} (?i)(AM|PM)(?-i)", "MM-dd-yyyy hh:mm:ss a"),
                                                                            new DateParser("[0-9]/[0-9]/[0-9]{4} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2} (?i)(AM|PM)(?-i)", "M/d/yyyy hh:mm:ss a"),
