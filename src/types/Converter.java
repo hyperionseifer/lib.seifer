@@ -122,6 +122,14 @@ public class Converter {
     }
     
     /**
+     * Determines whether the specified object is equal to null or not.
+     * @param value Value to evaluate
+     * @return True if value is null, otherwise false.
+     */
+    public static boolean  isNull(Object value)
+    { return (value == null); }
+    
+    /**
      * Determines whether the specified object is a numeric value or not.
      * @param value Value to evaluate.
      * @return True if the value is a numeric value otherwise false.
@@ -135,7 +143,8 @@ public class Converter {
                 value instanceof Integer ||
                 value instanceof Long ||
                 value instanceof Double ||
-                value instanceof Float) return true;
+                value instanceof Float ||
+                value instanceof Short) return true;
             else
             {
                 NumberFormat _formatter = NumberFormat.getInstance();
@@ -188,6 +197,26 @@ public class Converter {
     }
     
     /**
+     * Converts the specified value to char-typed object.
+     * @param value Value to convert.
+     * @return Char-typed value of the specified object if it is numeric, otherwise zero.
+     */
+    public static char toChar(Object value)
+    {
+        if (value == null) return '\0';
+        else 
+        {
+            String _toString = "";
+            
+            if (value instanceof String) _toString = (String)value;
+            else _toString = value.toString();
+            
+            if (_toString.length() <= 0) return '\0';
+            else return _toString.charAt(0);
+        }
+    }
+    
+    /**
      * Converts the specified value to date-typed object.
      * @param value Value to convert.
      * @return Date-typed value of the specified object if it is a date, otherwise 1900-01-01.
@@ -207,6 +236,16 @@ public class Converter {
            {
                java.sql.Date _date = (java.sql.Date)value;
                return new Date(_date.getTime());
+           }
+           else if (value instanceof Timestamp)
+           {
+               Timestamp _date = (Timestamp)value;
+               return new Date(_date.getTime());
+           }
+           else if (value instanceof Time)
+           {
+               Time _time = (Time)value;
+               return new Date(_time.getTime());
            }
            else
            {
@@ -304,6 +343,17 @@ public class Converter {
     {
         if (!isNumeric(value)) return 0;
         else return Long.parseLong(value.toString());
+    }
+    
+    /**
+     * Converts the specified value to short-typed object.
+     * @param value Value to convert
+     * @return Short-typed value of the specified object if it is numeric, otherwise zero.
+     */
+    public static short toShort(Object value)
+    {
+        if (!isNumeric(value)) return 0;
+        else return Short.parseShort(value.toString());
     }
     
 }
