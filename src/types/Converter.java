@@ -20,10 +20,6 @@ import text.RegEx;
  * @author user
  */
 public class Converter {
-    
-    public static DateFormat DATE_TIME_FORMAT = new SimpleDateFormat( "yyyyMMddkkmmss" );  
-
-    public static Calendar calendar = new GregorianCalendar();
 
     private static DateParser[] supportedDateFormats = new DateParser[] {  new DateParser("[0-9]{2}/[0-9]{2}/[0-9]{4} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2} (?i)(AM|PM)(?-i)", "MM/dd/yyyy hh:mm:ss a"), 
                                                                            new DateParser("[0-9]{2}\\-[0-9]{2}\\-[0-9]{4} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2} (?i)(AM|PM)(?-i)", "MM-dd-yyyy hh:mm:ss a"),
