@@ -299,6 +299,18 @@ public class DateTimeTest {
     }
     
     /**
+     * Test of getDayOfYear method, of class DateTime.
+     */
+    @Test
+    public void testGetDayOfYear()
+    {
+        System.out.println("-----------------------------------------------");
+        System.out.println("getDayOfYear()");
+        int result = DateTime.getDayOfYear();
+        System.out.println("Day of Year : " + result);
+    }
+    
+    /**
      * Test of getMonthName method, of class DateTime.
      */
     @Test
@@ -310,6 +322,63 @@ public class DateTimeTest {
         System.out.println("Full Name : " + result);
         result = DateTime.getMonthName(true);
         System.out.println("Abbreviated : " + result);
+    }
+    
+    /**
+     * Test of getWeekOfMonth method, of class DateTime.
+     */
+    @Test
+    public void testGetWeekOfMonth()
+    {
+        System.out.println("-----------------------------------------------");
+        System.out.println("getWeekOfMonth()");
+        int result = DateTime.getWeekOfMonth();
+        System.out.println("Week of Month : " + result);
+    }
+    
+    /**
+     * Test of getWeekOfYear method, of class DateTime.
+     */
+    @Test
+    public void testGetWeekOfYear()
+    {
+        System.out.println("-----------------------------------------------");
+        System.out.println("getWeekOfYear()");
+        int result = DateTime.getWeekOfYear();
+        System.out.println("Week of Year : " + result);
+    }
+    
+    /**
+     * Test of getYear method, of class DateTime.
+     */
+    @Test
+    public void testGetYear()
+    {
+        System.out.println("-----------------------------------------------");
+        System.out.println("getYear()");
+        int result = DateTime.getYear();
+        System.out.println("Year : " + result);
+    }
+    
+    /**
+     * Test of isLeapYear method, of class DateTime.
+     */
+    @Test
+    public void testIsLeapYear()
+    {
+        System.out.println("-----------------------------------------------");
+        System.out.println("isLeapYear()");
+       
+        boolean _leapYear = DateTime.isLeapYear();
+        System.out.println(DateTime.getYear() + " : " + _leapYear);
+        
+        int _year = 2012;
+        _leapYear = DateTime.isLeapYear(_year);
+        System.out.println(_year + " : " + _leapYear);
+        
+        _year = 2008;
+        _leapYear = DateTime.isLeapYear(_year);
+        System.out.println(_year + " : " + _leapYear);
     }
     
     /**

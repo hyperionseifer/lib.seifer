@@ -273,6 +273,29 @@ public class DateTime {
     }
 
     /**
+     * Gets the current date's day in the year.
+     * @return Day in the year (basically 1-365 where January 1 is 1).
+     */
+    public static int getDayOfYear()
+    { return getDayOfYear(date()); }
+    
+    /**
+     * Gets the specified date's day in the year.
+     * @param value Date to evaluate
+     * @return Day in the year (basically 1-365 where January 1 is 1).
+     */
+    public static int getDayOfYear(Date value)
+    {
+        int _day = 1;
+        
+        Calendar _calendar = Calendar.getInstance();
+        _calendar.setTime(value);
+        _day = _calendar.get(Calendar.DAY_OF_YEAR);
+        
+        return _day;
+    }
+    
+    /**
      * Gets the month of the current date.
      * @return Month of the year (basically 1-12 where January is 1).
      */
@@ -362,6 +385,52 @@ public class DateTime {
     }
     
     /**
+     * Gets the current date's week of the month.
+     * @return Week number of the month (basically 1-4 at most).
+     */
+    public static int getWeekOfMonth()
+    { return getWeekOfMonth(date()); }
+    
+    /**
+     * Gets the specified date's week of the month.
+     * @param value Date to evaluate
+     * @return Week number of the month (basically 1-4 at most).
+     */
+    public static int getWeekOfMonth(Date value)
+    {
+        int _week = 1;
+        
+        Calendar _calendar = Calendar.getInstance();
+        _calendar.setTime(value);
+        _week = _calendar.get(Calendar.WEEK_OF_MONTH);
+        
+        return _week;
+    }
+    
+    /**
+     * Gets the current date's week in the year.
+     * @return Week number within the current year.
+     */
+    public static int getWeekOfYear()
+    { return getWeekOfYear(date()); }
+    
+    /**
+     * Gets the specified date's week in the year.
+     * @param value Date to evaluate
+     * @return Week number within the current year.
+     */
+    public static int getWeekOfYear(Date value)
+    {
+        int _week = 1;
+        
+        Calendar _calendar = Calendar.getInstance();
+        _calendar.setTime(value);
+        _week = _calendar.get(Calendar.WEEK_OF_YEAR);
+        
+        return _week;
+    }
+    
+    /**
      * Gets the year of the current date.
      * @return Year of the current date
      */
@@ -382,6 +451,37 @@ public class DateTime {
         _year = _calendar.get(Calendar.YEAR);
         
         return _year;
+    }
+    
+    /**
+     * Determines whether the current date is in a leap year or not.
+     * @return True if the year of the current date is leap year, otherwise false.
+     */
+    public static boolean isLeapYear()
+    { return isLeapYear(date()); }
+    
+    /**
+     * Determines whether the specified date is in a leap year or not.
+     * @param value Date to evaluate
+     * @return True if the year of the specified date is leap year, otherwise false.
+     */
+    public static boolean isLeapYear(Date value)
+    { return isLeapYear(getYear(value)); }
+    
+    /**
+     * Determines whether the specified year is a leap year or not.
+     * @param year Year to evaluate
+     * @return True if the specified year is leap year, otherwise false.
+     */
+    public static boolean isLeapYear(int year)
+    {
+        if (year % 400 == 0) return true;
+        else
+        {
+            if (year % 4 == 0) return true;
+        }
+        
+        return false;
     }
     
     /**
