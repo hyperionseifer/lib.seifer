@@ -13,6 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import text.RegEx;
 
 /**
  *
@@ -24,30 +25,71 @@ public class Converter {
 
     public static Calendar calendar = new GregorianCalendar();
 
-    private static String[] supportedDateFormats = new String[] { "[0-9]{2}/[0-9]{2}/[0-9]{4} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2} (AM|am|PM|pm)",
-                                                                  "[0-9]{2}\\-[0-9]{2}\\-[0-9]{4} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2} (AM|am|PM|pm)",
-                                                                  "[0-9]/[0-9]/[0-9]{4} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2} (AM|am|PM|pm)",
-                                                                  "[0-9]\\-[0-9]\\-[0-9]{4} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2} (AM|am|PM|pm)",
-                                                                  "[0-9]{4}/[0-9]{2}/[0-9]{2} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2} (AM|am|PM|pm)", 
-                                                                  "[0-9]{4}\\-[0-9]{2}\\-[0-9]{2} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2} (AM|am|PM|pm)", 
-                                                                  "[0-9]{2}/[0-9]{2}/[0-9]{4} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2}",
-                                                                  "[0-9]{2}\\-[0-9]{2}\\-[0-9]{4} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2}",
-                                                                  "[0-9]/[0-9]/[0-9]{4} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2}",
-                                                                  "[0-9]\\-[0-9]\\-[0-9]{4} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2}",
-                                                                  "[0-9]{4}/[0-9]{2}/[0-9]{2} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2}", 
-                                                                  "[0-9]{4}\\-[0-9]{2}\\-[0-9]{2} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2}",
-                                                                  "(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Oct|Nov|Dec)/[0-9]{2}/[0-9]{4} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2} (AM|am|PM|pm)",
-                                                                  "[0-9]{2}\\-[0-9]{2}\\-[0-9]{4} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2} (AM|am|PM|pm)",
-                                                                  "[0-9]/[0-9]/[0-9]{4} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2} (AM|am|PM|pm)",
-                                                                  "[0-9]\\-[0-9]\\-[0-9]{4} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2} (AM|am|PM|pm)",
-                                                                  "[0-9]{4}/[0-9]{2}/[0-9]{2} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2} (AM|am|PM|pm)", 
-                                                                  "[0-9]{4}\\-[0-9]{2}\\-[0-9]{2} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2} (AM|am|PM|pm)", 
-                                                                  "[0-9]{2}/[0-9]{2}/[0-9]{4} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2}",
-                                                                  "[0-9]{2}\\-[0-9]{2}\\-[0-9]{4} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2}",
-                                                                  "[0-9]/[0-9]/[0-9]{4} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2}",
-                                                                  "[0-9]\\-[0-9]\\-[0-9]{4} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2}",
-                                                                  "[0-9]{4}/[0-9]{2}/[0-9]{2} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2}", 
-                                                                  "[0-9]{4}\\-[0-9]{2}\\-[0-9]{2} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2}"  };
+    private static DateParser[] supportedDateFormats = new DateParser[] {  new DateParser("[0-9]{2}/[0-9]{2}/[0-9]{4} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2} (?i)(AM|PM)(?-i)", "MM/dd/yyyy hh:mm:ss a"), 
+                                                                           new DateParser("[0-9]{2}\\-[0-9]{2}\\-[0-9]{4} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2} (?i)(AM|PM)(?-i)", "MM-dd-yyyy hh:mm:ss a"),
+                                                                           new DateParser("[0-9]/[0-9]/[0-9]{4} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2} (?i)(AM|PM)(?-i)", "M/d/yyyy hh:mm:ss a"),
+                                                                           new DateParser("[0-9]\\-[0-9]\\-[0-9]{4} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2} (?i)(AM|PM)(?-i)", "M-d-yyyy hh:mm:ss a"),
+                                                                           new DateParser("[0-9]{4}/[0-9]{2}/[0-9]{2} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2} (?i)(AM|PM)(?-i)", "yyyy/MM/dd hh:mm:ss a"), 
+                                                                           new DateParser("[0-9]{4}\\-[0-9]{2}\\-[0-9]{2} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2} (?i)(AM|PM)(?-i)", "yyyy-MM-dd hh:mm:ss a"), 
+                                                                           new DateParser("[0-9]{2}/[0-9]{2}/[0-9]{4} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2}", "MM/dd/yyyy HH:mm:ss"),
+                                                                           new DateParser("[0-9]{2}\\-[0-9]{2}\\-[0-9]{4} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2}", "MM-dd-yyyy HH:mm:ss"),
+                                                                           new DateParser("[0-9]/[0-9]/[0-9]{4} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2}", "M/d/yyyy HH:mm:ss"),
+                                                                           new DateParser("[0-9]\\-[0-9]\\-[0-9]{4} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2}", "M-d-yyyy HH:mm:ss"),
+                                                                           new DateParser("[0-9]{4}/[0-9]{2}/[0-9]{2} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2}", "yyyy/MM/dd HH:mm:ss"),
+                                                                           new DateParser("[0-9]{4}\\-[0-9]{2}\\-[0-9]{2} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2}", "yyyy-MM-dd HH:mm:ss"),
+                                                                           new DateParser("[0-9]{2}/[0-9]{2}/[0-9]{4} [0-9]{2}\\:[0-9]{2} (?i)(AM|PM)(?-i)", "MM/dd/yyyy hh:mm a"), 
+                                                                           new DateParser("[0-9]{2}\\-[0-9]{2}\\-[0-9]{4} [0-9]{2}\\:[0-9]{2} (?i)(AM|PM)(?-i)", "MM-dd-yyyy hh:mm a"),
+                                                                           new DateParser("[0-9]/[0-9]/[0-9]{4} [0-9]{2}\\:[0-9]{2} (?i)(AM|PM)(?-i)", "M/d/yyyy hh:mm a"),
+                                                                           new DateParser("[0-9]\\-[0-9]\\-[0-9]{4} [0-9]{2}\\:[0-9]{2} (?i)(AM|PM)(?-i)", "M-d-yyyy hh:mm a"),
+                                                                           new DateParser("[0-9]{4}/[0-9]{2}/[0-9]{2} [0-9]{2}\\:[0-9]{2} (?i)(AM|PM)(?-i)", "yyyy/MM/dd hh:mm a"), 
+                                                                           new DateParser("[0-9]{4}\\-[0-9]{2}\\-[0-9]{2} [0-9]{2}\\:[0-9]{2}\\ (?i)(AM|PM)(?-i)", "yyyy-MM-dd hh:mm a"), 
+                                                                           new DateParser("[0-9]{2}/[0-9]{2}/[0-9]{4} [0-9]{2}\\:[0-9]{2}", "MM/dd/yyyy HH:mm"),
+                                                                           new DateParser("[0-9]{2}\\-[0-9]{2}\\-[0-9]{4} [0-9]{2}\\:[0-9]{2}", "MM-dd-yyyy HH:mm"),
+                                                                           new DateParser("[0-9]/[0-9]/[0-9]{4} [0-9]{2}\\:[0-9]{2}", "M/d/yyyy HH:mm"),
+                                                                           new DateParser("[0-9]\\-[0-9]\\-[0-9]{4} [0-9]{2}\\:[0-9]{2}", "M-d-yyyy HH:mm"),
+                                                                           new DateParser("[0-9]{4}/[0-9]{2}/[0-9]{2} [0-9]{2}\\:[0-9]{2}", "yyyy/MM/dd HH:mm"),
+                                                                           new DateParser("[0-9]{4}\\-[0-9]{2}\\-[0-9]{2} [0-9]{2}\\:[0-9]{2}", "yyyy-MM-dd HH:mm"), 
+                                                                                
+                                                                           new DateParser("(?i)(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)(?-i)/[0-9]{2}/[0-9]{4} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2} (?i)(AM|PM)(?-i)", "MMM/dd/yyyy hh:mm:ss a"), 
+                                                                           new DateParser("(?i)(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)(?-i)\\-[0-9]{2}\\-[0-9]{4} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2} (?i)(AM|PM)(?-i)", "MMM-dd-yyyy hh:mm:ss a"),
+                                                                           new DateParser("[0-9]{4}/(?i)(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)(?-i)/[0-9]{2} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2} (?i)(AM|PM)(?-i)", "yyyy/MMM/dd hh:mm:ss a"), 
+                                                                           new DateParser("[0-9]{4}\\-(?i)(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)(?-i)\\-[0-9]{2} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2} (?i)(AM|PM)(?-i)", "yyyy-MMM-dd hh:mm:ss a"), 
+                                                                           new DateParser("(?i)(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)(?-i)/[0-9]{2}/[0-9]{4} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2}", "MMM/dd/yyyy HH:mm:ss"),
+                                                                           new DateParser("(?i)(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)(?-i)\\-[0-9]{2}\\-[0-9]{4} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2}", "MMM-dd-yyyy HH:mm:ss"),
+                                                                           new DateParser("[0-9]{4}/(?i)(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)(?-i)/[0-9]{2} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2}", "yyyy/MMM/dd HH:mm:ss"),
+                                                                           new DateParser("[0-9]{4}\\-(?i)(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)(?-i)\\-[0-9]{2} [0-9]{2}\\:[0-9]{2}\\:[0-9]{2}", "yyyy-MMM-dd HH:mm:ss"),
+                                                                           new DateParser("(?i)(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)(?-i)/[0-9]{2}/[0-9]{4} [0-9]{2}\\:[0-9]{2} (?i)(AM|PM)(?-i)", "MMM/dd/yyyy hh:mm a"), 
+                                                                           new DateParser("(?i)(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)(?-i)\\-[0-9]{2}\\-[0-9]{4} [0-9]{2}\\:[0-9]{2} (?i)(AM|PM)(?-i)", "MMM-dd-yyyy hh:mm a"),
+                                                                           new DateParser("[0-9]{4}/(?i)(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)(?-i)/[0-9]{2} [0-9]{2}\\:[0-9]{2} (?i)(AM|PM)(?-i)", "yyyy/MMM/dd hh:mm a"), 
+                                                                           new DateParser("[0-9]{4}\\-(?i)(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)(?-i)\\-[0-9]{2} [0-9]{2}\\:[0-9]{2}\\ (?i)(AM|PM)(?-i)", "yyyy-MMM-dd hh:mm a"), 
+                                                                           new DateParser("(?i)(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)(?-i)/[0-9]{2}/[0-9]{4} [0-9]{2}\\:[0-9]{2}", "MMM/dd/yyyy HH:mm"),
+                                                                           new DateParser("(?i)(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)(?-i)\\-[0-9]{2}\\-[0-9]{4} [0-9]{2}\\:[0-9]{2}", "MMM-dd-yyyy HH:mm"),
+                                                                           new DateParser("[0-9]{4}/(?i)(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)(?-i)/[0-9]{2} [0-9]{2}\\:[0-9]{2}", "yyyy/MMM/dd HH:mm"),
+                                                                           new DateParser("[0-9]{4}\\-(?i)(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)(?-i)\\-[0-9]{2} [0-9]{2}\\:[0-9]{2}", "yyyy-MMM-dd HH:mm"),
+    
+                                                                           new DateParser("[0-9]{2}/[0-9]{2}/[0-9]{4}", "MM/dd/yyyy"),
+                                                                           new DateParser("[0-9]/[0-9]/[0-9]{4}", "M/d/yyyy"),
+                                                                           new DateParser("[0-9]/[0-9]{2}/[0-9]{4}", "M/dd/yyyy"),
+                                                                           new DateParser("[0-9]{2}\\-[0-9]{2}\\-[0-9]{4}", "MM-dd-yyyy"),
+                                                                           new DateParser("[0-9]\\-[0-9]\\-[0-9]{4}", "M-d-yyyy"),
+                                                                           new DateParser("[0-9]\\-[0-9]{2}\\-[0-9]{4}", "M-dd-yyyy"),
+                                                                           new DateParser("[0-9]{4}/[0-9]{2}/[0-9]{2}", "yyyy/MM/dd"),
+                                                                           new DateParser("[0-9]{4}/[0-9]/[0-9]{2}", "yyyy/M/dd"),
+                                                                           new DateParser("[0-9]{4}\\-[0-9]{2}\\-[0-9]{2}", "yyyy-MM-dd"),
+                                                                           new DateParser("[0-9]{4}\\-[0-9]\\-[0-9]{2}", "yyyy-M-dd"),
+                                                                           new DateParser("[0-9]{4}/[0-9]{2}/[0-9]", "yyyy/MM/d"),
+                                                                           new DateParser("[0-9]{4}\\-[0-9]\\-[0-9]{2}", "yyyy-M-dd"),
+                                                                           
+                                                                           new DateParser("(?i)(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)(?-i)/[0-9]{2}/[0-9]{4}", "MMM/dd/yyyy"),
+                                                                           new DateParser("(?i)(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)(?-i)\\-[0-9]{2}\\-[0-9]{4}", "MMM-dd-yyyy"),
+                                                                           new DateParser("[0-9]{4}/(?i)(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)(?-i)/[0-9]{2}", "yyyy/MMM/dd"),
+                                                                           new DateParser("[0-9]{4}\\-(?i)(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)(?-i)\\-[0-9]{2}", "yyyy-MMM-dd"),
+                                                                           new DateParser("(?i)(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)(?-i)/[0-9]/[0-9]{4}", "MMM/d/yyyy"),
+                                                                           new DateParser("(?i)(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)(?-i)\\-[0-9]\\-[0-9]{4}", "MMM-d-yyyy"),
+                                                                           new DateParser("[0-9]{4}/(?i)(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)(?-i)/[0-9]", "yyyy/MMM/d"),
+                                                                           new DateParser("[0-9]{4}\\-(?i)(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)(?-i)\\-[0-9]", "yyyy-MMM-d"),
+                                                                           
+                                                                           };
     
     /**
      * Determines whether the specified object is a date value or not.
@@ -66,6 +108,13 @@ public class Converter {
             else
             {
                 String _toString = value.toString();
+                
+                for (int i = 0; i < supportedDateFormats.length; i++)
+                {
+                    DateParser _parser = supportedDateFormats[i];
+                    String _match = RegEx.getMatch(_toString, _parser.getRegEx());
+                    if (_match.equals(_toString)) return true;
+                }
                 
                 return false;
             }
@@ -148,38 +197,91 @@ public class Converter {
         if (!isDate(value)) 
         {
            Calendar _calendar = Calendar.getInstance();
-           _calendar.set(1900, 1, 1);
+           _calendar.set(1900, 0, 1, 0, 0, 0);
            return _calendar.getTime();
         }
         else
         {
            if (value instanceof Date) return (Date)value;
+           else if (value instanceof java.sql.Date)
+           {
+               java.sql.Date _date = (java.sql.Date)value;
+               return new Date(_date.getTime());
+           }
            else
            {
-               try
-               {
-                   if (value instanceof String)
-                   {
-                       if ("".equals(value.toString())) 
-                       {
-                            Calendar _calendar = Calendar.getInstance();
-                            _calendar.set(1900, 1, 1);
-                            return _calendar.getTime();            
-                       }
-                       else return IN_DATETIME_FORMAT.parse(value.toString());
-                   }
-                   else return IN_DATETIME_FORMAT.parse(value.toString());   
-               }
-               catch (ParseException ex)
-               {
-                   ex.toString();
+               String _toString = "";
                    
+               if (value instanceof String) _toString = (String)value;
+               else _toString = value.toString();
+               
+               if (_toString.equals(""))
+               {
                    Calendar _calendar = Calendar.getInstance();
-                   _calendar.set(1900, 1, 1);
-                   return _calendar.getTime();            
+                   _calendar.set(1900, 0, 1, 0, 0, 0);
+                   return _calendar.getTime();
+               }
+               else
+               {
+                   String _format = "";
+                   
+                   for (int i = 0; i < supportedDateFormats.length; i++)
+                   {
+                       DateParser _parser = supportedDateFormats[i];
+                       String _match = RegEx.getMatch(_toString, _parser.getRegEx());
+                           
+                       if (_match.equals(_toString))
+                       { _format = _parser.getDateFormat(); break; }
+                   }
+                   
+                   if (_format.equals(""))
+                   {
+                       Calendar _calendar = Calendar.getInstance();
+                       _calendar.set(1900, 0, 1, 0, 0, 0);
+                       return _calendar.getTime();
+                   }
+                   else
+                   {
+                        SimpleDateFormat _formatter = new SimpleDateFormat(_format);
+                      
+                        try
+                        {
+                            Date _date =  _formatter.parse(_toString);
+                            return _date;
+                        }
+                        catch (ParseException ex)
+                        {
+                            ex.toString();
+                            Calendar _calendar = Calendar.getInstance();
+                            _calendar.set(1900, 0, 1, 0, 0, 0);
+                            return _calendar.getTime();            
+                        }
+                   }
                }
            }
         }
+    }
+    
+    /**
+     * Converts the specified value to double-typed object.
+     * @param value Value to convert
+     * @return Double-typed value of the specified object if it is numeric, otherwise zero.
+     */
+    public static double toDouble(Object value)
+    {
+        if (!isNumeric(value)) return 0;
+        else return Double.parseDouble(value.toString());
+    }
+    
+    /**
+     * Converts the specified value to float-typed object.
+     * @param value Value to convert
+     * @return Float-typed value of the specified object if it is numeric, otherwise zero.
+     */
+    public static float toFloat(Object value)
+    {
+        if (!isNumeric(value)) return 0;
+        else return Float.parseFloat(value.toString());
     }
     
     /**
