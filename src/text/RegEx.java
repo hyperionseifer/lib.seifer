@@ -76,4 +76,18 @@ public class RegEx {
     public static boolean matches(String value, String pattern)
     { return value.matches(pattern); }
     
+    /**
+     * Replaces all regular expression matches found in the target string and returns the result.
+     * @param pattern Regular expression
+     * @param target Target text
+     * @param replacement  Replacement test
+     * @return Replacement result string
+     */
+    public static String replace(String pattern, String target, String replacement)
+    {
+        Pattern _pattern = Pattern.compile(pattern);
+        Matcher _matcher = _pattern.matcher(target);
+        return  _matcher.replaceAll(replacement);
+    }
+    
 }
