@@ -4,7 +4,6 @@
  */
 package types;
 
-import java.io.Console;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -271,6 +270,46 @@ public class DateTimeTest {
         long result = DateTime.diff(DateTime.DateInterval.Years, _date1, _date2);
         
         if (result != expectedResult) fail("Something's wrong");
+    }
+    
+    /**
+     * Test of getDayName method, of class DateTime.
+     */
+    @Test
+    public void testGetDayName()
+    {
+        System.out.println("-----------------------------------------------");
+        System.out.println("getDayName()");
+        String result = DateTime.getDayName();
+        System.out.println("Full Name : " + result);
+        result = DateTime.getDayName(true);
+        System.out.println("Abbreviated : " + result);
+    }
+    
+    /**
+     * Test of getDayOfMonth method, of class DateTime.
+     */
+    @Test
+    public void testGetDayOfMonth()
+    {
+        System.out.println("-----------------------------------------------");
+        System.out.println("getDayOfMonth()");
+        int result = DateTime.getDayOfMonth();
+        System.out.println("Day of Month : " + result);
+    }
+    
+    /**
+     * Test of getMonthName method, of class DateTime.
+     */
+    @Test
+    public void testGetMonthName()
+    {
+        System.out.println("-----------------------------------------------");
+        System.out.println("getMonthName()");
+        String result = DateTime.getMonthName();
+        System.out.println("Full Name : " + result);
+        result = DateTime.getMonthName(true);
+        System.out.println("Abbreviated : " + result);
     }
     
     /**

@@ -4,12 +4,14 @@
  */
 package text;
 
+import java.util.Date;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import types.Converter;
 
 /**
  *
@@ -48,13 +50,55 @@ public class FormatterTest {
         
         String format = "N4";
         String expResult = "10.0000";
-        String result = Formatter.Format(value, format);
+        String result = Formatter.format(value, format);
         
         assertEquals(expResult, result);
         if (!result.equals(expResult)) fail("Something's wrong.");
-   
     }
 
+    /**
+     * Test of Format method, of class Formatter.
+     */
+    @Test
+    public void testFormat_date_String() {
+        System.out.println("-----------------------------------------------");
+        System.out.println("Format(Date, String)");
+        
+        Date value = Converter.toDate("8/13/1985");
+        
+        String format = "sql";
+        String expResult = "1985-08-13";
+        String result = Formatter.format(value, format);
+        
+        System.out.println(format + " : " + result);
+        assertEquals(expResult, result);
+        if (!result.equals(expResult)) fail("Something's wrong.");
+        
+        format = "sqldatetime";
+        expResult = "1985-08-13 00:00:00";
+        result = Formatter.format(value, format);
+        
+        System.out.println(format + " : " + result);
+        assertEquals(expResult, result);
+        if (!result.equals(expResult)) fail("Something's wrong.");
+        
+        format = "short";
+        expResult = "08/13/1985";
+        result = Formatter.format(value, format);
+        
+        System.out.println(format + " : " + result);
+        assertEquals(expResult, result);
+        if (!result.equals(expResult)) fail("Something's wrong.");
+        
+        format = "long";
+        expResult = "08/13/1985 12:00:00 AM";
+        result = Formatter.format(value, format);
+        
+        System.out.println(format + " : " + result);
+        assertEquals(expResult, result);
+        if (!result.equals(expResult)) fail("Something's wrong.");
+    }
+    
     /**
      * Test of Format method, of class Formatter.
      */
@@ -67,14 +111,14 @@ public class FormatterTest {
         
         String format = "N4";
         String expResult = "1,000.0000";
-        String result = Formatter.Format(value, format);
+        String result = Formatter.format(value, format);
         
         assertEquals(expResult, result);
         if (!result.equals(expResult)) fail("Something's wrong.");
     
         format = "F4";
         expResult = "1000.0000";
-        result = Formatter.Format(value, format);
+        result = Formatter.format(value, format);
         
         assertEquals(expResult, result);
         if (!result.equals(expResult)) fail("Something's wrong.");
@@ -92,14 +136,14 @@ public class FormatterTest {
        
         String format = "N4";
         String expResult = "1,000.0000";
-        String result = Formatter.Format(value, format);
+        String result = Formatter.format(value, format);
         
         assertEquals(expResult, result);
         if (!result.equals(expResult)) fail("Something's wrong.");
     
         format = "F4";
         expResult = "1000.0000";
-        result = Formatter.Format(value, format);
+        result = Formatter.format(value, format);
         
         assertEquals(expResult, result);
         if (!result.equals(expResult)) fail("Something's wrong.");
@@ -117,14 +161,14 @@ public class FormatterTest {
         
         String format = "N4";
         String expResult = "1,000.0000";
-        String result = Formatter.Format(value, format);
+        String result = Formatter.format(value, format);
         
         assertEquals(expResult, result);
         if (!result.equals(expResult)) fail("Something's wrong.");
     
         format = "F4";
         expResult = "1000.0000";
-        result = Formatter.Format(value, format);
+        result = Formatter.format(value, format);
         
         assertEquals(expResult, result);
         if (!result.equals(expResult)) fail("Something's wrong.");
@@ -142,14 +186,14 @@ public class FormatterTest {
         
         String format = "N4";
         String expResult = "1,000.0000";
-        String result = Formatter.Format(value, format);
+        String result = Formatter.format(value, format);
         
         assertEquals(expResult, result);
         if (!result.equals(expResult)) fail("Something's wrong.");
     
         format = "F4";
         expResult = "1000.0000";
-        result = Formatter.Format(value, format);
+        result = Formatter.format(value, format);
         
         assertEquals(expResult, result);
         if (!result.equals(expResult)) fail("Something's wrong.");
@@ -167,14 +211,14 @@ public class FormatterTest {
         
         String format = "N4";
         String expResult = "1,000.0000";
-        String result = Formatter.Format(value, format);
+        String result = Formatter.format(value, format);
         
         assertEquals(expResult, result);
         if (!result.equals(expResult)) fail("Something's wrong.");
     
         format = "F4";
         expResult = "1000.0000";
-        result = Formatter.Format(value, format);
+        result = Formatter.format(value, format);
         
         assertEquals(expResult, result);
         if (!result.equals(expResult)) fail("Something's wrong.");

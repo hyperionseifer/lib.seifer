@@ -6,7 +6,6 @@ package types;
 
 import java.sql.Time;
 import java.sql.Timestamp;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -163,6 +162,229 @@ public class DateTime {
     }
     
     /**
+     * Gets the day of week name for the current date.
+     * @return Day of week name for the current date
+     */
+    public static String getDayName()
+    { return getDayName(false); }
+    
+    /**
+     * Gets the day of week name for the current date.
+     * @param abbreviate Determines whether to abbreviate returning value or not.
+     * @return Day of week name for the current date
+     */
+    public static String getDayName(boolean abbreviate)
+    { return getDayName(date(), abbreviate); }
+    
+    /**
+     * Gets the day of week name for the specified date.
+     * @param value Date to evaluate
+     * @return Day of week name for the specified date
+     */
+    public static String getDayName(Date value)
+    { return getDayName(value, false); }
+    
+    /**
+     * Gets the day of week name for the specified date.
+     * @param value Date to evaluate
+     * @param abbreviate Determines whether to abbreviate returning value or not.
+     * @return Day of week name for the specified date
+     */
+    public static String getDayName(Date value, boolean abbreviate)
+    {
+        String _dayName = "";
+       
+        _dayName = getDayName(getDayOfWeek(value), abbreviate);
+        
+        return _dayName;
+    }
+    
+    /**
+     * Gets the day of week name.
+     * @param dayofweek Day of the week (basically 1-7; where Sunday is 1)
+     * @return Day of week name
+     */
+    public static String getDayName(int dayofweek)
+    { return getDayName(dayofweek, false); }
+    
+    /**
+     * Gets the day of week name.
+     * @param dayofweek Day of the week (basically 1-7; where Sunday is 1)
+     * @param abbreviate Determines whether to abbreviate returning value or not.
+     * @return Day of week name
+     */
+    public static String getDayName(int dayofweek, boolean abbreviate)
+    {
+        String _dayName = "";
+        
+        String[] _dayNames = new String[] { "Sunday", "Monday", "Tuesday", "Wednesday",
+                                            "Thursday", "Friday", "Saturday" };
+        
+        if (abbreviate) _dayName = _dayNames[dayofweek - 1].substring(0, 3);
+        else _dayName =  _dayNames[dayofweek - 1];
+        
+        return _dayName;
+    }
+
+    /**
+     * Gets the day of month for the current date.
+     * @return Day of the month (basically between the first and last day of the calendar month).
+     */
+    public static int getDayOfMonth()
+    { return getDayOfMonth(date()); }
+    
+    /**
+     * Gets the day of month for the specified date.
+     * @param value Date to evaluate
+     * @return Day of the month (basically between the first and last day of the calendar month).
+     */
+    public static int getDayOfMonth(Date value)
+    {
+        int _day = 1;
+        
+        Calendar _calendar = Calendar.getInstance();
+        _calendar.setTime(value);
+        _day = _calendar.get(Calendar.DAY_OF_MONTH);
+        
+        return _day;
+    }
+    
+    /**
+     * Gets the week day of the current date.
+     * @return Day of the week (basically 1-7 where Sunday is 1).
+     */
+    public static int getDayOfWeek()
+    { return getDayOfWeek(date()); }
+    
+    /**
+     * Gets the week day of the specified date.
+     * @param value Date value to evaluate
+     * @return Day of the week (basically 1-7 where Sunday is 1).
+     */
+    public static int getDayOfWeek(Date value)
+    {
+        int _dayOfWeek = 1;
+        
+        Calendar _calendar = Calendar.getInstance();
+        _calendar.setTime(value);
+        _dayOfWeek = _calendar.get(Calendar.DAY_OF_WEEK);
+        
+        return _dayOfWeek;
+    }
+
+    /**
+     * Gets the month of the current date.
+     * @return Month of the year (basically 1-12 where January is 1).
+     */
+    public static int getMonth()
+    { return getMonth(date()); }
+    
+    /**
+     * Gets the month of the specified date.
+     * @param value Date to evaluate
+     * @return Month of the year (basically 1-12 where January is 1).
+     */
+    public static int getMonth(Date value)
+    {
+        int _month = 1;
+        
+        Calendar _calendar = Calendar.getInstance();
+        _calendar.setTime(value);
+        _month = _calendar.get(Calendar.MONTH) + 1;
+        
+        return _month;
+    }
+    
+    /**
+     * Gets the month name of the current date.
+     * @return Month name of the current date
+     */
+    public static String getMonthName()
+    { return getMonthName(false); }
+    
+    /**
+     * Gets the month name of the current date.
+     * @param abbreviate Determines whether to return abbreviated value of the month or not.
+     * @return Month name of the current date
+     */
+    public static String getMonthName(boolean abbreviate)
+    { return getMonthName(date(), abbreviate); }
+    
+    /**
+     * Gets the month name of the specified date.
+     * @param value Date value to evaluate
+     * @return Month name of the specified date
+     */
+    public static String getMonthName(Date value)
+    { return getMonthName(value, false); }
+    
+    /**
+     * Gets the month name of the specified date.
+     * @param value Date value to evaluate
+     * @param abbreviate Determines whether to return abbreviated value of the month or not.
+     * @return Month name of the specified date
+     */
+    public static String getMonthName(Date value, boolean abbreviate)
+    {
+        String _monthName = "";
+        
+        _monthName = getMonthName(getMonth(value), abbreviate);
+        
+        return _monthName;
+    }
+    
+    /**
+     * Gets the month name through the given month of the year
+     * @param month Month of the year (basically 1 to 12 where January is 1).
+     * @return Month name
+     */
+    public static String getMonthName(int month)
+    { return getMonthName(month, false); }
+    
+    /**
+     * Gets the month name through the given month of the year
+     * @param month Month of the year (basically 1 to 12 where January is 1).
+     * @param abbreviate Determines whether to return abbreviated value of the month or not.
+     * @return Month name
+     */
+    public static String getMonthName(int month, boolean  abbreviate)
+    {
+        String _monthName = "";
+        
+        String[] _monthNames = new String[] { "January", "February", "March", "April", "May",
+                                              "June", "July", "August", "September", "October",
+                                              "November", "December" };
+        
+        if (abbreviate) _monthName = _monthNames[month - 1].substring(0, 3);
+        else _monthName = _monthNames[month - 1];
+        
+        return _monthName;
+    }
+    
+    /**
+     * Gets the year of the current date.
+     * @return Year of the current date
+     */
+    public static int getYear()
+    { return getYear(date()); }
+    
+    /**
+     * Gets the year of the specified date.
+     * @param value Date value to evaluate
+     * @return Year of the specified date
+     */
+    public static int getYear(Date value)
+    {
+        int _year = 1900;
+        
+        Calendar _calendar = Calendar.getInstance();
+        _calendar.setTime(value);
+        _year = _calendar.get(Calendar.YEAR);
+        
+        return _year;
+    }
+    
+    /**
      * Gets the current date and time.
      * @return Current date and time.
      */
@@ -182,5 +404,100 @@ public class DateTime {
      */
     public static Timestamp timeStamp()
     { return new Timestamp(System.currentTimeMillis()); }
+    
+    /**
+     * Converts the specified date into its date and time string representation.
+     * @param value date value to convert
+     * @return Date and time string representation of the specified date.  
+     */
+    public static String toLongDateString(Date value)
+    { return Converter.toLongDateString(value); }
+    
+    /**
+     * Converts the specified date into its date and time string representation.
+     * @param value date value to convert
+     * @return Date and time string representation of the specified date.  
+     */
+    public static String toLongDateString(java.sql.Date value)
+    { return Converter.toLongDateString(value); }
+   
+    /**
+     * Converts the specified date into its date and time string representation.
+     * @param value date value to convert
+     * @return Date and time string representation of the specified date.  
+     */
+    public static String toLongDateString(Timestamp value)
+    { return Converter.toLongDateString(value); }
+    
+    /**
+     * Converts the specified date into its date string representation.
+     * @param value date value to convert
+     * @return Date string representation of the specified date.  
+     */
+    public static String toShortDateString(Date value)
+    { return Converter.toShortDateString(value); }
+    
+    /**
+     * Converts the specified date into its date string representation.
+     * @param value date value to convert
+     * @return Date string representation of the specified date.  
+     */
+    public static String toShortDateString(java.sql.Date value)
+    { return Converter.toShortDateString(value); }
+  
+    /**
+     * Converts the specified date into its date string representation.
+     * @param value date value to convert
+     * @return Date string representation of the specified date.  
+     */
+    public static String toShortDateString(Timestamp value)
+    { return Converter.toShortDateString(value); }
+    
+    /**
+     * Converts the specified date into its SQL-qualified date string representation.
+     * @param value Date value to convert
+     * @return SQL-qualified date string representation of the specified date. 
+     */
+    public static String toSqlDateString(Date value)
+    { return Converter.toSqlDateString(value); }
+    
+    /**
+     * Converts the specified date into its SQL-qualified date string representation.
+     * @param value Date value to convert
+     * @return SQL-qualified date string representation of the specified date. 
+     */
+    public static String toSqlDateString(java.sql.Date value)
+    { return Converter.toSqlDateString(value); }
+    
+    /**
+     * Converts the specified date into its SQL-qualified date string representation.
+     * @param value Date value to convert
+     * @return SQL-qualified date string representation of the specified date. 
+     */
+    public static String toSqlDateString(Timestamp value)
+    { return Converter.toSqlDateString(value); }
+    
+    /**
+     * Converts the specified date into its SQL-qualified date and time string representation.
+     * @param value Date value to convert
+     * @return SQL-qualified date and time string representation of the specified date.
+     */
+    public static String toSqlDateTimeString(Date value)
+    { return Converter.toSqlDateTimeString(value); }
+    /**
+     * Converts the specified date into its SQL-qualified date and time string representation.
+     * @param value Date value to convert
+     * @return SQL-qualified date and time string representation of the specified date.
+     */
+    public static String toSqlDateTimeString(java.sql.Date value)
+    { return Converter.toSqlDateTimeString(value); }
+   
+    /**
+     * Converts the specified date into its SQL-qualified date and time string representation.
+     * @param value Date value to convert
+     * @return SQL-qualified date and time string representation of the specified date.
+     */
+    public static String toSqlDateTimeString(Timestamp value)
+    { return Converter.toSqlDateTimeString(value); }
     
 }

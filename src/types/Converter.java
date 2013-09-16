@@ -6,13 +6,12 @@ package types;
 
 import java.sql.Time;
 import java.sql.Timestamp;
-import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
+import text.Formatter;
 import text.RegEx;
 
 /**
@@ -341,6 +340,30 @@ public class Converter {
         else return Long.parseLong(value.toString());
     }
     
+      /**
+     * Converts the specified date into its date and time string representation.
+     * @param value date value to convert
+     * @return Date and time string representation of the specified date. 
+     */
+    public static String toLongDateString(Date value)
+    { return Formatter.format(value, "datetime"); }
+ 
+    /**
+     * Converts the specified date into its date and time string representation.
+     * @param value date value to convert
+     * @return Date and time string representation of the specified date. 
+     */
+    public static String toLongDateString(java.sql.Date value)
+    { return Formatter.format(value, "datetime"); }
+    
+    /**
+     * Converts the specified date into its date and time string representation.
+     * @param value date value to convert
+     * @return Date and time string representation of the specified date. 
+     */
+    public static String toLongDateString(Timestamp value)
+    { return Formatter.format(value, "datetime"); }
+  
     /**
      * Converts the specified value to short-typed object.
      * @param value Value to convert
@@ -351,5 +374,78 @@ public class Converter {
         if (!isNumeric(value)) return 0;
         else return Short.parseShort(value.toString());
     }
+    
+    /**
+     * Converts the specified date into its short date string representation.
+     * @param value Date value to convert.
+     * @return Short date string representation of the specified date. 
+     */
+    public static String toShortDateString(Date value)
+    { return Formatter.format(value, "short"); }
+ 
+    /**
+     * Converts the specified date into its short date string representation.
+     * @param value Date value to convert.
+     * @return Short date string representation of the specified date. 
+     */
+    public static String toShortDateString(java.sql.Date value)
+    { return Formatter.format(value, "short");  }
+    
+    /**
+     * Converts the specified date into its short date string representation.
+     * @param value Date value to convert
+     * @return Short date string representation of the specified date. 
+     */
+    public static String toShortDateString(Timestamp value)
+    { return Formatter.format(value, "short");  }
+    
+    /**
+     * Converts the specified date into its SQL-qualified date string representation.
+     * @param value Date value to convert
+     * @return SQL-qualified date string representation of the specified date. 
+     */
+    public static String toSqlDateString(Date value)
+    { return Formatter.format(value, "sql"); }
+    
+    /**
+     * Converts the specified date into its SQL-qualified date string representation.
+     * @param value Date value to convert
+     * @return SQL-qualified date string representation of the specified date. 
+     */
+    public static String toSqlDateString(java.sql.Date value)
+    { return Formatter.format(value, "sql"); }
+    
+    
+    /**
+     * Converts the specified date into its SQL-qualified date string representation.
+     * @param value Date value to convert
+     * @return SQL-qualified date string representation of the specified date. 
+     */
+    public static String toSqlDateString(Timestamp value)
+    { return Formatter.format(value, "sql"); }
+  
+     /**
+     * Converts the specified date into its SQL-qualified date and time string representation.
+     * @param value Date value to convert
+     * @return SQL-qualified date and time string representation of the specified date. 
+     */
+    public static String toSqlDateTimeString(Date value)
+    { return Formatter.format(value, "sqldatetime"); }
+  
+    /**
+     * Converts the specified date into its SQL-qualified date and time string representation.
+     * @param value Date value to convert
+     * @return SQL-qualified date and time string representation of the specified date. 
+     */
+    public static String toSqlDateTimeString(java.sql.Date value)
+    { return Formatter.format(value, "sqldatetime"); }
+    
+    /**
+     * Converts the specified date into its SQL-qualified date and time string representation.
+     * @param value Date value to convert
+     * @return SQL-qualified date and time string representation of the specified date. 
+     */
+    public static String toSqlDateTimeString(Timestamp value)
+    { return Formatter.format(value, "sqldatetime"); }
     
 }
