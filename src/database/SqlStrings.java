@@ -10,12 +10,26 @@ import types.Converter;
  * and open the template in the editor.
  */
 
-
 /**
  *
  * @author Seph
  */
 public class SqlStrings {
+    
+    /**
+     * Converts the specified byte array to a valid SQL text.
+     * @param value Byte array to convert
+     * @return Hexadecimal SQL notation of the specified byte array.
+     */
+    public static String toSqlValidString(byte[] value)
+    {
+        if (value == null) return "NULL";
+        else
+        {
+            String _hex = Converter.toHexadecimalString(value);
+            return "x'" + _hex + "'";
+        }
+    }
     
     /**
      * Parses the specified numeric value to a valid SQL text.

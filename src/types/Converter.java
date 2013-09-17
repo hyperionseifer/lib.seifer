@@ -4,6 +4,13 @@
  */
 package types;
 
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.NumberFormat;
@@ -11,6 +18,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import javax.imageio.ImageIO;
 import text.Formatter;
 import text.RegEx;
 
@@ -192,6 +200,58 @@ public class Converter {
     }
     
     /**
+     * Converts the specified hexadecimal string into byte array
+     * @param hex Hexadecimal string to convert
+     * @return Byte array representation of the specified hexadecimal string.
+     */
+    public static byte[] toByteArray(String hex)
+    {
+        int _len = hex.length();
+        
+        byte[] _bytes = new byte[_len / 2];
+        for (int i = 0; i < _len; i += 2) 
+        {
+            _bytes[i / 2] = (byte) ((Character.digit(hex.charAt(i), 16) << 4) + Character.digit(hex.charAt(i+1), 16));
+        }
+        
+        return _bytes;
+    }
+    
+    public static byte[] toByteArray(Image image)
+    {
+        byte[] _bytes = null;
+        
+        ByteArrayOutputStream _stream = new ByteArrayOutputStream();
+        // ImageIO.write(null, null, null);
+        
+        return _bytes;
+    }
+    
+    /**
+     * Converts the specified file into a byte array
+     * @param file Path relevant to the file to be converted
+     * @return Byte array representation of the specified file.
+     */
+    public static byte[] toByteArray(java.io.File file)
+    { return toByteArray(file.toPath()); }
+    
+    /**
+     * Converts the specified file into a byte array
+     * @param path Path relevant to the file to be converted
+     * @return Byte array representation of the specified file.
+     */
+    public static byte[] toByteArray(Path path)
+    {
+        byte[] _bytes = null;
+        
+        try
+        { _bytes = Files.readAllBytes(path); }
+        catch (IOException ex) { ex.toString(); }
+        
+        return _bytes; 
+    }
+    
+    /**
      * Converts the specified value to char-typed object.
      * @param value Value to convert.
      * @return Char-typed value of the specified object if it is numeric, otherwise zero.
@@ -316,6 +376,67 @@ public class Converter {
     {
         if (!isNumeric(value)) return 0;
         else return Float.parseFloat(value.toString());
+    }
+    
+    final protected static char[] HEX_BASE = "0123456789ABCDEF".toCharArray();
+    
+    /**
+     * Converts the specified byte-array to hexadecimal string.
+     * @param bytes Byte array to convert
+     * @return Hexadecimal string representation of the specified byte array, otherwise a blank string if it is null.
+     */
+    public static String toHexadecimalString(byte[] bytes)
+    {
+        if (bytes == null) return "";
+        else
+        {
+            char[] _hex = new char[bytes.length * 2];
+            int c;
+            
+            for (int i = 0; i < bytes.length; i++)
+            {
+                c = bytes[i] & 0xFF;
+                _hex[i * 2] = HEX_BASE[c >>> 4];
+                _hex[i * 2 + 1] = HEX_BASE[c & 0x0F];
+            }
+            
+            return new String(_hex);
+        }
+    }
+    
+    /**
+     * Converts the specified byte array into an image.
+     * @param value Byte array to convert
+     * @return Image representation of the specified byte array, otherwise null if something went wrong while converting.
+     */
+    public static Image toImage(byte[] value)
+    {
+        Image _image = null;
+        
+        if (value != null)
+        {
+            try
+            {
+                BufferedImage img = ImageIO.read(new ByteArrayInputStream(value));
+                _image = (Image)img;
+            }
+            catch (IOException ex)
+            { System.out.println(ex.getMessage());  }    
+        }
+        
+        return _image;
+    }
+    
+    /**
+     * Converts the specified hexadecimal string into its image representation
+     * @param hex Hexadecimal string to convert
+     * @return Image representation of the specified hexadecimal string
+     */
+    public static Image toImage(String hex)
+    {
+        byte[] _bytes = toByteArray(hex);
+        if (_bytes != null) return toImage(_bytes);
+        else return null;
     }
     
     /**

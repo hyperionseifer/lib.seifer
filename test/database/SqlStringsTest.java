@@ -15,7 +15,7 @@ import types.DateTime;
 
 /**
  *
- * @author user
+ * @author Seph
  */
 public class SqlStringsTest {
     
