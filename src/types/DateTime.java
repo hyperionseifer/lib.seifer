@@ -297,6 +297,38 @@ public class DateTime {
     }
     
     /**
+     * Gets the number of days the current date's month and year
+     * @return Days in the current date's month and year.
+     */
+    public static int getDaysInMonth()
+    { return getDaysInMonth(date()); }
+    
+    /**
+     * Gets the number of days the specified date's month and year
+     * @param value Date to evaluate
+     * @return Days in the specified date's month and year.
+     */
+    public static int getDaysInMonth(Date value)
+    { return getDaysInMonth(getMonth(value), getYear(value));  }
+    
+    /**
+     * Gets the number of days in the specified month of the specified year.
+     * @param month Month of the year (basically 1-12 where January is 1)
+     * @param year Year to evaluate.
+     * @return Days in the specified month of the specified year.
+     */
+    public static int getDaysInMonth(int month, int year)
+    {
+        int _days = 0;
+        
+        Calendar _calendar = Calendar.getInstance();
+        _calendar.set(year, month - 1, 1);
+        _days = _calendar.getActualMaximum(Calendar.DATE);
+        
+        return _days;
+    }
+    
+    /**
      * Gets the month of the current date.
      * @return Month of the year (basically 1-12 where January is 1).
      */

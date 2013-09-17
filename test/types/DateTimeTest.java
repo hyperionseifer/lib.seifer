@@ -311,6 +311,26 @@ public class DateTimeTest {
     }
     
     /**
+     * Test of getDaysInMonth method, of class DateTime.
+     */
+    @Test
+    public void testGetDaysInMonth()
+    {
+        System.out.println("-----------------------------------------------");
+        System.out.println("getDaysInMmonth()");
+        int result = DateTime.getDaysInMonth();
+        System.out.println("Day In Month to-date : " + result);
+        
+        Date _date = Converter.toDate("2/1/2012");
+        result = DateTime.getDaysInMonth(_date);
+        System.out.println("Day In Month " + DateTime.toShortDateString(_date)  + " : " + result);
+        
+        _date = DateTime.addMonths(DateTime.date(), -1);
+        result = DateTime.getDaysInMonth(_date);
+        System.out.println("Day In Month " + DateTime.toShortDateString(_date)  + " : " + result);
+    }
+    
+    /**
      * Test of getMonthName method, of class DateTime.
      */
     @Test
