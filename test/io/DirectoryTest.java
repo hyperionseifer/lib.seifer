@@ -47,6 +47,7 @@ public class DirectoryTest {
         String path = "C:\\Users\\user\\Desktop\\sample directory\\";
         File result = Directory.create(path);
         if (result == null) fail("Something's wrong.");
+        else Directory.delete(path, true);
     }
 
     /**
