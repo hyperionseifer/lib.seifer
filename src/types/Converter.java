@@ -4,6 +4,7 @@
  */
 package types;
 
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
@@ -189,6 +190,23 @@ public class Converter {
     }
     
     /**
+     * Converts the specified image object into BufferedImage.
+     * @param image Image to convert
+     * @return BufferedImage representation of the specified image object.
+     */
+    public static BufferedImage toBufferedImage(Image image)
+    {
+        if (image instanceof BufferedImage) return (BufferedImage)image;
+        else
+        {
+            final BufferedImage _bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_BGR);
+            final Graphics2D _graphics = _bufferedImage.createGraphics();
+            _graphics.drawImage(image, 0, 0, null);
+            return _bufferedImage;
+        }
+    }
+    
+    /**
      * Converts the specified value to byte-typed object.
      * @param value Value to convert.
      * @return Byte-typed value of the specified object if it is numeric, otherwise zero.
@@ -209,6 +227,7 @@ public class Converter {
         int _len = hex.length();
         
         byte[] _bytes = new byte[_len / 2];
+        
         for (int i = 0; i < _len; i += 2) 
         {
             _bytes[i / 2] = (byte) ((Character.digit(hex.charAt(i), 16) << 4) + Character.digit(hex.charAt(i+1), 16));
@@ -217,12 +236,31 @@ public class Converter {
         return _bytes;
     }
     
+    /**
+     * Converts the specified image into its byte array representation.
+     * @param image Image object to convert
+     * @return Byte array representation of the specified image, otherwise null if something went wrong while converting or if the 
+     * image to be converted is null.
+     */
     public static byte[] toByteArray(Image image)
     {
         byte[] _bytes = null;
         
-        ByteArrayOutputStream _stream = new ByteArrayOutputStream();
-        // ImageIO.write(null, null, null);
+        if (image != null)
+        {
+            ByteArrayOutputStream _stream = new ByteArrayOutputStream();
+        
+            try
+            {
+                BufferedImage _bufferedImage = toBufferedImage(image);
+                ImageIO.write(_bufferedImage, "png", _stream);
+                _stream.flush();
+                _bytes = _stream.toByteArray();
+                _stream.close();
+            }
+            catch (IOException ex)
+            {  ex.toString(); }
+        }
         
         return _bytes;
     }
