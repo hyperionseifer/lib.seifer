@@ -37,7 +37,7 @@
 <h3 align="center">Seifer</h3>
 
   <p align="center">
-    project_description
+    Seifer Java Library
     <br />
     <a href="https://github.com/github_username/repo_name"><strong>Explore the docs »</strong></a>
     <br />
